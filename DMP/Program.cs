@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using DMP.Data;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<LoginContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LoginContext")));
+builder.Services.AddDbContext<UsersContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UsersContext")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Login.Models;
+using Users.Models;
 
 namespace DMP.Data
 {
-    public class LoginContext : DbContext
+    public class UsersContext : DbContext
     {
-        public LoginContext (DbContextOptions<LoginContext> options)
+        public UsersContext (DbContextOptions<UsersContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Login.Models.Login> Login { get; set; }
+        public DbSet<Users.Models.Users> Users { get; set; }
     }
 }
