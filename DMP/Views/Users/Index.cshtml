@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Login.Models.Login>
+﻿@model IEnumerable<Users.Models.Users>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,6 +21,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.admin)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sex)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +47,18 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.admin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sex)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

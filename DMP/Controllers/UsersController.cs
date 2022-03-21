@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DMP.Data;
-using Login.Models;
+using Users.Models;
 
 namespace DMP.Controllers
 {
-    public class LoginsController : Controller
+    public class UsersController : Controller
     {
-        private readonly LoginContext _context;
+        private readonly UsersContext _context;
 
-        public LoginsController(LoginContext context)
+        public UsersController(UsersContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace DMP.Controllers
         // GET: Logins
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Login.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
         // GET: Logins/Details/5
@@ -34,7 +34,7 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var login = await _context.Login
+            var login = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (login == null)
             {
@@ -44,18 +44,18 @@ namespace DMP.Controllers
             return View(login);
         }
 
-        // GET: Logins/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Logins/Create
+        // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,username,password,admin")] Login.Models.Login login)
+        public async Task<IActionResult> Create([Bind("Id,username,password,admin,height,weight,age,sex")] Users.Models.Users login)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var login = await _context.Login.FindAsync(id);
+            var login = await _context.Users.FindAsync(id);
             if (login == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace DMP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,username,password,admin")] Login.Models.Login login)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,username,password,admin,height,weight,age,sex")] Users.Models.Users login)
         {
             if (id != login.Id)
             {
@@ -125,7 +125,7 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var login = await _context.Login
+            var login = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (login == null)
             {
@@ -140,15 +140,15 @@ namespace DMP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var login = await _context.Login.FindAsync(id);
-            _context.Login.Remove(login);
+            var login = await _context.Users.FindAsync(id);
+            _context.Users.Remove(login);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LoginExists(int id)
         {
-            return _context.Login.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
