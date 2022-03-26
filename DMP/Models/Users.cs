@@ -1,14 +1,31 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Users.Models
 {
     public class Users
     {
-        public int Id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public bool admin { get; set; }
-        public int? height { get; set; }
-        public int? weight { get; set; }
-        public int? age { get; set; }
-        public string? sex { get; set; }
+        public class Nutrients
+        {
+            [Column("ID")]
+            public int Id { get; set; }
+            [StringLength(30)]
+            [Required(ErrorMessage = "Please enter a valid Username"), MaxLength(30)]
+            [Column("USERNAME")]
+            public string USERNAME { get; set; }
+            [Column("PASSWORD")]
+            [Required]
+            public string Password { get; set; }
+            [Column("ADMIN")]
+            public bool Admin { get; set; }
+            [Column("HEIGHT")]
+            public int? Height { get; set; }
+            [Column("WEIGHT")]
+            public int? Weight { get; set; }
+            [Column("AGE")]
+            public int? Age { get; set; }
+            [Column("SEX")]
+            public string? Sex { get; set; }
+        }
     }
 }
