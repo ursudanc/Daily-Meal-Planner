@@ -3,13 +3,14 @@ using Microsoft.Extensions.DependencyInjection;
 using DMP.Data;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<UsersContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("UsersContext")));
+builder.Services.AddDbContext<DMPContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DMPContext")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

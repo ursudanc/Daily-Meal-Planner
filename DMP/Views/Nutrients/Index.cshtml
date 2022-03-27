@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DMP.Models.Users>
+﻿@model IEnumerable<DMP.Models.Nutrients>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,25 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.username)
+                @Html.DisplayNameFor(model => model.Calories)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.password)
+                @Html.DisplayNameFor(model => model.Proteins)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.admin)
+                @Html.DisplayNameFor(model => model.Fats)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.height)
+                @Html.DisplayNameFor(model => model.Sugar)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.weight)
+                @Html.DisplayNameFor(model => model.Carbs)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.age)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.sex)
+                @Html.DisplayNameFor(model => model.Fibers)
             </th>
             <th></th>
         </tr>
@@ -40,25 +37,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.username)
+                @Html.DisplayFor(modelItem => item.Calories)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.password)
+                @Html.DisplayFor(modelItem => item.Proteins)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.admin)
+                @Html.DisplayFor(modelItem => item.Fats)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.height)
+                @Html.DisplayFor(modelItem => item.Sugar)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.weight)
+                @Html.DisplayFor(modelItem => item.Carbs)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sex)
+                @Html.DisplayFor(modelItem => item.Fibers)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

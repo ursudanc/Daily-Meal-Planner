@@ -10,22 +10,22 @@ using DMP.Models;
 
 namespace DMP.Controllers
 {
-    public class UsersController : Controller
+    public class NutrientsController : Controller
     {
         private readonly DMPContext _context;
 
-        public UsersController(DMPContext context)
+        public NutrientsController(DMPContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Nutrients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Nutrients.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Nutrients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var nutrients = await _context.Nutrients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (nutrients == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(nutrients);
         }
 
-        // GET: Users/Create
+        // GET: Nutrients/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Nutrients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Create([Bind("Id,Calories,Proteins,Fats,Sugar,Carbs,Fibers")] Nutrients nutrients)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                _context.Add(nutrients);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            return View(nutrients);
         }
 
-        // GET: Users/Edit/5
+        // GET: Nutrients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var nutrients = await _context.Nutrients.FindAsync(id);
+            if (nutrients == null)
             {
                 return NotFound();
             }
-            return View(users);
+            return View(nutrients);
         }
 
-        // POST: Users/Edit/5
+        // POST: Nutrients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Calories,Proteins,Fats,Sugar,Carbs,Fibers")] Nutrients nutrients)
         {
-            if (id != users.Id)
+            if (id != nutrients.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace DMP.Controllers
             {
                 try
                 {
-                    _context.Update(users);
+                    _context.Update(nutrients);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.Id))
+                    if (!NutrientsExists(nutrients.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace DMP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            return View(nutrients);
         }
 
-        // GET: Users/Delete/5
+        // GET: Nutrients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var nutrients = await _context.Nutrients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (nutrients == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(nutrients);
         }
 
-        // POST: Users/Delete/5
+        // POST: Nutrients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            _context.Users.Remove(users);
+            var nutrients = await _context.Nutrients.FindAsync(id);
+            _context.Nutrients.Remove(nutrients);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsersExists(int id)
+        private bool NutrientsExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Nutrients.Any(e => e.Id == id);
         }
     }
 }

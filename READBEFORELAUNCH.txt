@@ -1,0 +1,7 @@
+
+==========
+Daca rulati aplicatia si aveti o eroare cum ca nu va merge baza de date : 
+Mergeti in Data - > UsersContext.cs
+scrieti acolo in constructorul public UsersContext:
+
+Database.EnsureCreated();
