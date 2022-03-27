@@ -10,22 +10,23 @@ using DMP.Models;
 
 namespace DMP.Controllers
 {
-    public class UsersController : Controller
+    public class RecipesController : Controller
     {
         private readonly DMPContext _context;
 
-        public UsersController(DMPContext context)
+        public RecipesController(DMPContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var dMPContext = _context.Recipes.Include(r => r.Nutrient);
+            return View(await dMPContext.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var recipes = await _context.Recipes
+                .Include(r => r.Nutrient)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (recipes == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(recipes);
         }
 
-        // GET: Users/Create
+        // GET: Recipes/Create
         public IActionResult Create()
         {
+            ViewData["NutrientId"] = new SelectList(_context.Set<Nutrients>(), "Id", "Id");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Recipes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Create([Bind("Id,Description,Name,Image,Type,Portions,NutrientId")] Recipes recipes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                _context.Add(recipes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["NutrientId"] = new SelectList(_context.Set<Nutrients>(), "Id", "Id", recipes.NutrientId);
+            return View(recipes);
         }
 
-        // GET: Users/Edit/5
+        // GET: Recipes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var recipes = await _context.Recipes.FindAsync(id);
+            if (recipes == null)
             {
                 return NotFound();
             }
-            return View(users);
+            ViewData["NutrientId"] = new SelectList(_context.Set<Nutrients>(), "Id", "Id", recipes.NutrientId);
+            return View(recipes);
         }
 
-        // POST: Users/Edit/5
+        // POST: Recipes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Name,Image,Type,Portions,NutrientId")] Recipes recipes)
         {
-            if (id != users.Id)
+            if (id != recipes.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace DMP.Controllers
             {
                 try
                 {
-                    _context.Update(users);
+                    _context.Update(recipes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.Id))
+                    if (!RecipesExists(recipes.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace DMP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["NutrientId"] = new SelectList(_context.Set<Nutrients>(), "Id", "Id", recipes.NutrientId);
+            return View(recipes);
         }
 
-        // GET: Users/Delete/5
+        // GET: Recipes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +130,31 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var recipes = await _context.Recipes
+                .Include(r => r.Nutrient)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (recipes == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(recipes);
         }
 
-        // POST: Users/Delete/5
+        // POST: Recipes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            _context.Users.Remove(users);
+            var recipes = await _context.Recipes.FindAsync(id);
+            _context.Recipes.Remove(recipes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsersExists(int id)
+        private bool RecipesExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Recipes.Any(e => e.Id == id);
         }
     }
 }

@@ -3,6 +3,22 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:UsersContext"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:TestContext"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Testing1Context"
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DailyMealPlannerContext"
+    },
+    "mssql5": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DMPContext"
     }
   }
 }

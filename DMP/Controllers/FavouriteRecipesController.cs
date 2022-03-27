@@ -10,22 +10,23 @@ using DMP.Models;
 
 namespace DMP.Controllers
 {
-    public class UsersController : Controller
+    public class FavouriteRecipesController : Controller
     {
         private readonly DMPContext _context;
 
-        public UsersController(DMPContext context)
+        public FavouriteRecipesController(DMPContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: FavouriteRecipes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var dMPContext = _context.FavouriteRecipes.Include(f => f.Recipe).Include(f => f.User);
+            return View(await dMPContext.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: FavouriteRecipes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,45 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var favouriteRecipes = await _context.FavouriteRecipes
+                .Include(f => f.Recipe)
+                .Include(f => f.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (favouriteRecipes == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(favouriteRecipes);
         }
 
-        // GET: Users/Create
+        // GET: FavouriteRecipes/Create
         public IActionResult Create()
         {
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Description");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "password");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: FavouriteRecipes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Create([Bind("Id,RecipeId,UserId")] FavouriteRecipes favouriteRecipes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                _context.Add(favouriteRecipes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Description", favouriteRecipes.RecipeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "password", favouriteRecipes.UserId);
+            return View(favouriteRecipes);
         }
 
-        // GET: Users/Edit/5
+        // GET: FavouriteRecipes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +80,24 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var favouriteRecipes = await _context.FavouriteRecipes.FindAsync(id);
+            if (favouriteRecipes == null)
             {
                 return NotFound();
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Description", favouriteRecipes.RecipeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "password", favouriteRecipes.UserId);
+            return View(favouriteRecipes);
         }
 
-        // POST: Users/Edit/5
+        // POST: FavouriteRecipes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,username,password,admin,height,weight,age,sex")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecipeId,UserId")] FavouriteRecipes favouriteRecipes)
         {
-            if (id != users.Id)
+            if (id != favouriteRecipes.Id)
             {
                 return NotFound();
             }
@@ -97,12 +106,12 @@ namespace DMP.Controllers
             {
                 try
                 {
-                    _context.Update(users);
+                    _context.Update(favouriteRecipes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.Id))
+                    if (!FavouriteRecipesExists(favouriteRecipes.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +122,12 @@ namespace DMP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Description", favouriteRecipes.RecipeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "password", favouriteRecipes.UserId);
+            return View(favouriteRecipes);
         }
 
-        // GET: Users/Delete/5
+        // GET: FavouriteRecipes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +135,32 @@ namespace DMP.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var favouriteRecipes = await _context.FavouriteRecipes
+                .Include(f => f.Recipe)
+                .Include(f => f.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (users == null)
+            if (favouriteRecipes == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(favouriteRecipes);
         }
 
-        // POST: Users/Delete/5
+        // POST: FavouriteRecipes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            _context.Users.Remove(users);
+            var favouriteRecipes = await _context.FavouriteRecipes.FindAsync(id);
+            _context.FavouriteRecipes.Remove(favouriteRecipes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsersExists(int id)
+        private bool FavouriteRecipesExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.FavouriteRecipes.Any(e => e.Id == id);
         }
     }
 }
